@@ -15,6 +15,9 @@ export const StudentsProvider = ({ children }) => {
         comments: "", 
     })
     const [ badPostStudent, setBadPostStudent ] = useState(false);
+    const [ studentsList, setStudentsList ] = useState([]);
+    const [ getStudentsAnswer, setGetStudentsAnswer ] = useState(false);
+    const [ deleted, setDeleted ] = useState(false);
 
     const navigate = useNavigate()
 
@@ -26,9 +29,34 @@ export const StudentsProvider = ({ children }) => {
         .catch((e) => {
             console.log(e.response.data);
             setBadPostStudent(!badPostStudent);
-            window.confirm(e.response.data)
+            window.confirm(e.response.data);
         })
     }
+
+    const getStudents = (config) => {
+        axios.get(`${url}/students`, config)
+        .then((answer) => {
+            setStudentsList(answer.data);
+            setGetStudentsAnswer(true);
+        })
+        .catch((e) => {
+            console.log(e.response.data);
+            window.confirm(e.response.data);
+        })
+    }  
+
+    const deleteStudent = (config, id) => {
+        axios.delete(`${url}/delete-student/${id}`, config)
+        .then((answer) => {
+            window.confirm("estudante deletado");
+            setDeleted(!deleted)
+        })
+        .catch((e) => {
+            console.log(e.response.data);
+            window.confirm(e.response.data);
+        })
+    }  
+
 
     return (
         <StudentsContexts.Provider
@@ -36,7 +64,12 @@ export const StudentsProvider = ({ children }) => {
                 student,
                 setStudent,
                 badPostStudent,
-                postStudent
+                postStudent,
+                studentsList,
+                getStudents,
+                getStudentsAnswer,
+                deleteStudent,
+                deleted
             }}
         >
             { children }

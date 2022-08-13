@@ -6,6 +6,7 @@ import CreateStudent from "../pages/CreateStudent"
 
 import { AuthProvider } from "../contexts/AuthContext"
 import { StudentsProvider } from "../contexts/StudentsContext"
+import StudentsPage from "../pages/StudentsPage"
 
 export default function Router() {
     return(
@@ -16,6 +17,7 @@ export default function Router() {
                     <Route path="/" element={<SignIn />}/>
                     <Route path="/sign-up" element={<SignUp />} />
                     <Route path="/new-student" element={<CreateStudent />} />
+                    <Route path="/students" element={<StudentsPage />} />
                 </Routes>
             </StudentsProvider>
             </AuthProvider>
