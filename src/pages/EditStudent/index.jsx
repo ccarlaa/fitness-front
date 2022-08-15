@@ -1,15 +1,25 @@
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import BottomBar from '../../components/BottomBar/index';
 import { StudentsContexts } from '../../contexts/StudentsContext';
 import RenderButton from '../../components/RenderButton';
 import ReactInputMask from 'react-input-mask';
 import style from './style';
 
-export default function CreateStudent() {
-    const { student, setStudent, postStudent, badPostStudent } = useContext(StudentsContexts);
-    const { name, age, weight, height, objective, comments } = student;
+export default function EditStudent() {
+    const { 
+        uniqueStudentInfos,
+        setUniqueStudentInfos, 
+        getUniqueStudent, 
+        editStudent, 
+        successfullyEdited, 
+        setSuccessfullyEdited,
+        studentOldName
+    } = useContext(StudentsContexts);
+    const { name, age, weight, height, objective, comments } = uniqueStudentInfos;
     const [ disabled, setDisabled ] = useState(false);
+
+    const { id } = useParams()
 
     const navigate = useNavigate();
 
@@ -24,12 +34,14 @@ export default function CreateStudent() {
 
     useEffect(() => {
         setDisabled(false);
-    },[badPostStudent]);
+        getUniqueStudent(config, id);
+    },[]);
+
 
     function OnSubmit(e) {
         setDisabled(disabled);
         e.preventDefault();
-        postStudent(student, config);
+        editStudent(config, id, uniqueStudentInfos);
     }
 
     return (
@@ -46,7 +58,7 @@ export default function CreateStudent() {
                         placeholder = "Nome"
                         autoComplete="on"
                         required
-                        onChange = {(e) => setStudent({...student, name: e.target.value})}
+                        onChange = {(e) => setUniqueStudentInfos({...uniqueStudentInfos, name: e.target.value})}
                     />
                     <ReactInputMask 
                         disabled = {disabled}
@@ -55,7 +67,7 @@ export default function CreateStudent() {
                         placeholder = "Idade"
                         title = "Insira um número válido"
                         required
-                        onChange = {(e) => setStudent({...student, age: parseInt(e.target.value)})}
+                        onChange = {(e) => setUniqueStudentInfos({...uniqueStudentInfos, age: parseInt(e.target.value)})}
                     />
                     <ReactInputMask 
                         disabled = {disabled}
@@ -64,7 +76,7 @@ export default function CreateStudent() {
                         placeholder = "Peso (kg)"
                         title = "Insira um número válido"
                         required
-                        onChange = {(e) => setStudent({...student, weight: parseFloat(e.target.value)})}
+                        onChange = {(e) => setUniqueStudentInfos({...uniqueStudentInfos, weight: parseFloat(e.target.value)})}
                     />
                     <ReactInputMask 
                         disabled = {disabled}
@@ -73,7 +85,7 @@ export default function CreateStudent() {
                         placeholder = "Altura"
                         title = "Insira um número válido"
                         required
-                        onChange = {(e) => setStudent({...student, height: parseFloat(e.target.value)})}
+                        onChange = {(e) => setUniqueStudentInfos({...uniqueStudentInfos, height: parseFloat(e.target.value)})}
                     />
                     <input 
                         disabled = {disabled}
@@ -81,20 +93,35 @@ export default function CreateStudent() {
                         value = {objective}
                         placeholder = "Objetivo"
                         required
-                        onChange = {(e) => setStudent({...student, objective: e.target.value})}
+                        onChange = {(e) => setUniqueStudentInfos({...uniqueStudentInfos, objective: e.target.value})}
                     />
                     <input 
                         disabled = {disabled}
                         type = "text"
                         value = {comments}
                         placeholder = "Comentários"
-                        onChange = {(e) => setStudent({...student, comments: e.target.value})}
+                        onChange = {(e) => setUniqueStudentInfos({...uniqueStudentInfos, comments: e.target.value})}
                     />
                     <style.Button disabled={disabled} type="submit">
                         <RenderButton state={disabled} text="Cadastrar"/>
                     </style.Button>
                 </style.Form >
             </style.Center>
+            {successfullyEdited ? 
+                <>
+                    <style.Warning></style.Warning>
+                    <style.Message>
+                        <div>
+                            <ion-icon name="close-outline" onClick={() => setSuccessfullyEdited(false)}></ion-icon>
+                        </div>
+                        <h1>As informações foram atualizadas</h1>
+                        <style.ButtonWarning disabled={false} onClick={() => navigate('/students')}>
+                            <RenderButton state={false} text="OK"/>
+                        </style.ButtonWarning>
+                    </style.Message>
+                </>
+                : null
+            }
             <BottomBar />
         </style.Container>
     )

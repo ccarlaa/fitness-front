@@ -13,17 +13,27 @@ export const StudentsProvider = ({ children }) => {
         height: "", 
         objective: "", 
         comments: "", 
-    })
+    });
     const [ badPostStudent, setBadPostStudent ] = useState(false);
     const [ studentsList, setStudentsList ] = useState([]);
     const [ getStudentsAnswer, setGetStudentsAnswer ] = useState(false);
     const [ deleted, setDeleted ] = useState(false);
+    const [ uniqueStudentInfos, setUniqueStudentInfos ] = useState({
+        name: "",
+        age: "", 
+        weight: "", 
+        height: "", 
+        objective: "", 
+        comments: "", 
+    });
+    const [ successfullyEdited, setSuccessfullyEdited ] = useState(false)
+    const [ studentOldName, setStudentOldName ] = useState("")
 
     const navigate = useNavigate()
 
     const postStudent = (studentInfos, config) => {
         axios.post(`${url}/new-student`, studentInfos, config)
-        .then((answer) => {
+        .then(() => {
             navigate('/students');
         })
         .catch((e) => {
@@ -47,7 +57,7 @@ export const StudentsProvider = ({ children }) => {
 
     const deleteStudent = (config, id) => {
         axios.delete(`${url}/delete-student/${id}`, config)
-        .then((answer) => {
+        .then(() => {
             window.confirm("estudante deletado");
             setDeleted(!deleted)
         })
@@ -57,6 +67,29 @@ export const StudentsProvider = ({ children }) => {
         })
     }  
 
+    const getUniqueStudent = (config,id) => {
+        axios.get(`${url}/students/${id}`, config)
+        .then((answer) => {
+            setUniqueStudentInfos(answer.data);
+            setStudentOldName(answer.data.name);
+            console.log(uniqueStudentInfos)
+        })
+        .catch((e) => {
+            console.log(e.response.data);
+            window.confirm(e.response.data);
+        })
+    }
+
+    const editStudent = (config, id, infos) => {
+        axios.patch(`${url}/update-student/${id}`, infos, config)
+        .then(() => {
+            setSuccessfullyEdited(true);
+        })
+        .catch((e) => {
+            console.log(e.response.data);
+            window.confirm(e.response.data);
+        })
+    }
 
     return (
         <StudentsContexts.Provider
@@ -69,7 +102,14 @@ export const StudentsProvider = ({ children }) => {
                 getStudents,
                 getStudentsAnswer,
                 deleteStudent,
-                deleted
+                deleted,
+                getUniqueStudent,
+                uniqueStudentInfos,
+                setUniqueStudentInfos,
+                successfullyEdited,
+                editStudent,
+                studentOldName,
+                setSuccessfullyEdited
             }}
         >
             { children }
