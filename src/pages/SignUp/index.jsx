@@ -53,7 +53,7 @@ export default function SignUp() {
                             type = { hiddenPassword ? "password" : "text"}
                             value = {password}
                             pattern = "[0-9a-zA-Z$*_/@#]{4,}"
-                            title = "A senha deve conter no mínimo 3 caracteres"
+                            title = "A senha deve conter no mínimo 4 caracteres"
                             placeholder = "Senha"
                             required
                             onChange = {(e) => setSignUp({...signUp, password: e.target.value})}
@@ -71,7 +71,7 @@ export default function SignUp() {
                             value = {repeatedPassword}
                             pattern = {password}
                             title = "Digite senhas iguais"
-                            placeholder = "Confime a senha"
+                            placeholder = "Confirme sua senha"
                             required
                             onChange = {(e) => setSignUp({...signUp, repeatedPassword: e.target.value})}
                         >

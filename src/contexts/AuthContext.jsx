@@ -2,6 +2,7 @@ import React, { createContext, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 export const AuthContexts = createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -43,13 +44,13 @@ export const AuthProvider = ({ children }) => {
                 name: answer.data.name,
                 token: answer.data.token,
             }));
-            navigate('/homePage');
+            navigate('/new-student');
         })
         .catch((e) => {
             console.log(e.response.data);
             setBadSignIn(!badSignIn);
             window.confirm(e.response.data)
-        });
+        })
     }
 
     return (
