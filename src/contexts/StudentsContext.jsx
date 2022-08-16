@@ -35,6 +35,14 @@ export const StudentsProvider = ({ children }) => {
         axios.post(`${url}/new-student`, studentInfos, config)
         .then(() => {
             navigate('/students');
+            setStudent({
+                name: "",
+                age: "", 
+                weight: "", 
+                height: "", 
+                objective: "", 
+                comments: "", 
+            })
         })
         .catch((e) => {
             console.log(e.response.data);
@@ -58,7 +66,6 @@ export const StudentsProvider = ({ children }) => {
     const deleteStudent = (config, id) => {
         axios.delete(`${url}/delete-student/${id}`, config)
         .then(() => {
-            window.confirm("estudante deletado");
             setDeleted(!deleted)
         })
         .catch((e) => {
@@ -72,7 +79,6 @@ export const StudentsProvider = ({ children }) => {
         .then((answer) => {
             setUniqueStudentInfos(answer.data);
             setStudentOldName(answer.data.name);
-            console.log(uniqueStudentInfos)
         })
         .catch((e) => {
             console.log(e.response.data);

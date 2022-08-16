@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
             password: signUp.password
         }
         axios.post("http://localhost:5000/sign-up", body)
-        .then(() => navigate('/sign-in'))
+        .then(() => navigate('/'))
         .catch((e) => {
             console.log(e.response.data);
             setbadSignUp(!badSignUp);
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
                 name: answer.data.name,
                 token: answer.data.token,
             }));
-            navigate('/new-student');
+            navigate('/students');
         })
         .catch((e) => {
             console.log(e.response.data);

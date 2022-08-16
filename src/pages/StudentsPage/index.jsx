@@ -36,7 +36,7 @@ export default function StudentsPage() {
                     <style.StudentsList>
                         {studentsList.map((student) => {
                         return (
-                            <style.StudentInfos>
+                            <style.StudentInfos key={student.id}>
                                 <TreeView
                                 aria-label="file system navigator"
                                 defaultCollapseIcon={<ion-icon name="chevron-down-outline"></ion-icon>}
