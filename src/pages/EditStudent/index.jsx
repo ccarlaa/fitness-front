@@ -103,7 +103,7 @@ export default function EditStudent() {
                         onChange = {(e) => setUniqueStudentInfos({...uniqueStudentInfos, comments: e.target.value})}
                     />
                     <style.Button disabled={disabled} type="submit">
-                        <RenderButton state={disabled} text="Cadastrar"/>
+                        <RenderButton state={disabled} text="Atualizar"/>
                     </style.Button>
                 </style.Form >
             </style.Center>
@@ -111,9 +111,6 @@ export default function EditStudent() {
                 <>
                     <style.Warning></style.Warning>
                     <style.Message>
-                        <div>
-                            <ion-icon name="close-outline" onClick={() => setSuccessfullyEdited(false)}></ion-icon>
-                        </div>
                         <h1>As informações foram atualizadas</h1>
                         <style.ButtonWarning disabled={false} onClick={() => navigate('/students')}>
                             <RenderButton state={false} text="OK"/>
